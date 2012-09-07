@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PagesController do
  before(:each) do
-    @base_title = "Ruby on Rails Tutorial Sample App "
+    @base_title = "Ruby on Rails Tutorial Sample App | "
   end
 
 render_views
