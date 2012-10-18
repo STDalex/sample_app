@@ -91,8 +91,31 @@ describe User do
       User.new(@attr.merge(:password => long, :password_confirmation => long)).should_not be_valid
     end
     
+  end
+  
+  describe "password encryption" do
     
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+    
+    it "should have an encrypted password attribute" do
+      @user.should respond_to(:encrypted_password)
+    end
+    
+    it "should set the encrypted password" do
+      @user.encrypted_password.should_not be_blank
+    end
+    
+    it "has_password? should be true if password match" do
+      @user.has_password?(@attr[:password]).should be_true
+    end
+    
+    it "has_password? should be false if password not match" do
+      @user.has_password?('invalid').should_not be_true
+    end
     
   end
+  
 
 end
