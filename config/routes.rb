@@ -1,14 +1,5 @@
 SampleApp::Application.routes.draw do
-<<<<<<< HEAD
-#<<<<<<< HEAD
-#  resources :users
-  
-#=======
-=======
->>>>>>> 3c44b9330c2fd044044a42f80591a5d3850581b3
-resources :users  
-
-#>>>>>>> 3c44b9330c2fd044044a42f80591a5d3850581b3
+resources :users 
   match '/contact', :to => 'pages#contact'
   match '/about', :to=> 'pages#about'
   match '/help', :to => 'pages#help'
