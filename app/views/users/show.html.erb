@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<%= @user.name %>, <%= @user.email %>
-=======
-<%= @user.name%>, <%=@user.email%>
->>>>>>> 3c44b9330c2fd044044a42f80591a5d3850581b3
-=======
-<%= @user.name%>, <%=@user.email%>
->>>>>>> 3c44b9330c2fd044044a42f80591a5d3850581b3
+<h1>
+  <%= gravatar_image_tag @user.email, class: "gravatar" %>
+  <%= @user.name %>
+</h1>
