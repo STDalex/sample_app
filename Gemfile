@@ -7,6 +7,7 @@ gem 'rails'
 
 gem 'sqlite3', :group => :development
 gem 'gravatar_image_tag'
+gem 'activerecord-postgresql-adapter'
 
 group :development do
   gem 'rspec-rails'
