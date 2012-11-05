@@ -14,6 +14,32 @@ describe UsersController do
       get :new
       response.should have_selector("title", :content => "Sign up")
     end
+
+    it "should have a 'name' field" do
+      get :new
+      response.should have_selector("input[name='user[name]'][type='text']")
+    end
+
+    it "should have a 'email' field" do
+      get :new
+      response.should have_selector("input[name='user[email]'][type='text']")
+    end
+
+    it "should have a 'password' field" do
+      get :new
+      response.should have_selector("input[name='user[password]'][type='password']")
+    end
+
+    it "should have a 'password confirmation' field" do
+      get :new
+      response.should have_selector("input[name='user[password_confirmation]'][type='password']")
+    end
+
+    it "should have a submit button" do
+      get :new
+      response.should have_selector("input[name='commit'][type='submit']")
+    end
+
   end
 
   describe "GET 'show'" do
@@ -53,7 +79,7 @@ describe UsersController do
     describe "failure" do
 
       before do
-        @attr = {name:"", email:"", password:"", password_confirmation:""}
+        @attr = {name:"", email:"", password:"q", password_confirmation:"wer"}
       end
 
       it "should not create a user" do
@@ -96,6 +122,10 @@ describe UsersController do
         flash[:success].should =~ /welcome to the sample app/i 
       end
 
+      it "should sign the user in" do
+        post :create, user: @attr
+        controller.should be_signed_in
+      end
     end
 
   end

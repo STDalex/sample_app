@@ -11,11 +11,13 @@ describe "Users" do
           visit signup_path
           fill_in "Name",         with: ""
           fill_in "Email",        with: ""
-          fill_in "Password",     with: ""
-          fill_in "Confirmation", with: ""
+          fill_in "Password",     with: "qw"
+          fill_in "Confirmation", with: "wq"
           click_button "Sign Up"
           response.should render_template('users/new')
           response.should have_selector("div#error_explanation")
+          response.should have_selector("input[name='user[password]'][type='password']",content:"")
+          response.should have_selector("input[name='user[password_confirmation]'][type='password']",content:"")
         end.should_not change(User, :count)
       end
 
