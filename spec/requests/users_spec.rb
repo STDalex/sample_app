@@ -41,4 +41,41 @@ describe "Users" do
     end
 
   end
+
+  describe "sign in/out" do
+
+    describe "failure" do
+
+      it "shoud not sign in" do
+        visit '/'
+        click_link "Sign in"
+        fill_in :email, with:""
+        fill_in :password, with:""
+        click_button
+        response.should have_selector("div.flash.error", content:"Invalid")
+      end
+    end
+
+    describe "success" do
+
+      it "should sign in" do
+        user = FactoryGirl.create(:user)
+        visit '/'
+        integration_sign_in(user)
+        #controller.should be_signed_in
+        response.should have_selector("td.sidebar.round", content: user.name)
+        response.should have_selector("a", href: user_path(user))
+        click_link "Sign out"
+        response.should have_selector("a", href:'/signin')
+        #controller.should_not be_signed_in
+      end
+    end
+
+  end
+
+
+
+
+
+
 end
