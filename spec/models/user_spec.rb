@@ -12,6 +12,7 @@
 require 'spec_helper'
 
 describe User do
+
   before(:each) do
     @attr = { 
       :name => "Example User",
@@ -89,8 +90,7 @@ describe User do
     it "should reject a very long password" do
       long = "a"*41
       User.new(@attr.merge(:password => long, :password_confirmation => long)).should_not be_valid
-    end
-    
+    end    
   end
   
   describe "password encryption" do
@@ -128,11 +128,6 @@ describe User do
       it "it should return thr user on email/password match" do
         User.authenticate(@attr[:email], @attr[:password]).should == @user
       end
-
-
-    end
-    
+    end   
   end
-  
-
 end

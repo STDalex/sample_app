@@ -8,11 +8,13 @@ gem 'rails'
 gem 'sqlite3', :group => :development
 gem 'gravatar_image_tag'
 gem 'activerecord-postgresql-adapter'
+gem 'will_paginate'
 
 group :development do
   gem 'rspec-rails'
   gem 'annotate'
   gem 'heroku'
+  gem 'faker'
 end
 
 group :test do
