@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  before_filter :allready_signed_in_user, only: :new 
   def new
     @title = "Sign in"
   end
@@ -18,6 +19,12 @@ class SessionsController < ApplicationController
   def destroy
     sign_out
     redirect_to root_path
+  end
+
+  private 
+
+  def allready_signed_in_user
+    redirect_to(root_path) if signed_in?
   end
 
 end

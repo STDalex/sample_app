@@ -5,16 +5,29 @@ render_views
 
   describe "GET 'new'" do
 
-    it "should be successful" do
-      get :new
-      response.should be_success
+    describe "for non-sign-in user" do
+      it "should be successful" do
+        get :new
+        response.should be_success
+      end
+
+      it "should have the right title" do
+        get :new
+        response.should have_selector("title", content:"Sign in")
+      end
     end
 
-    it "should have the right title" do
-      get :new
-      response.should have_selector("title", content:"Sign in")
-    end
+    describe "for signed-in user" do
+      before do
+        user = FactoryGirl.create(:user)
+        test_sign_in(user)
+      end
 
+      it "should redirect to root path" do
+        get :new
+        response.should redirect_to(root_path)
+      end
+    end
   end
 
   describe "POST 'create'" do

@@ -39,6 +39,20 @@ describe UsersController do
       get :new
       response.should have_selector("input[name='commit'][type='submit']")
     end
+
+    describe "for signed-in users" do
+      before do
+        @user = FactoryGirl.create(:user)
+        test_sign_in(@user)
+      end
+
+      it "should redirect to root path" do
+        get :new
+        response.should redirect_to(root_path)
+      end
+
+    end
+
   end
 
   describe "GET 'show'" do
@@ -255,7 +269,7 @@ describe UsersController do
         third = FactoryGirl.create(:user, name:"Ron", email:"ronmail@example.com")
         @users = [@user, second, third]
         30.times do |n|
-          @users << FactoryGirl.create(:user, email:"example#{n+1}@ax.com")
+          @users << FactoryGirl.create(:user, email:"example#{n}@ax.com")
         end
       end
 
@@ -276,6 +290,13 @@ describe UsersController do
         end
       end
 
+      it "should not have 'delete' selector" do
+        get :index
+        @users.each do |user|
+          response.should_not have_selector("a", title:"Delete #{user.name}", content:"delete")
+        end
+      end
+
       it 'should paginate users' do
         get :index
         response.should have_selector("div.pagination")
@@ -283,8 +304,32 @@ describe UsersController do
         response.should have_selector("a", href:"/users?page=2", content:"2")
         response.should have_selector("a", href:"/users?page=2", content:"Next")
       end
-
     end
+
+    describe 'for admin user' do
+      before do
+        @admin = FactoryGirl.create(:user, admin: true)
+        @users = []
+        test_sign_in(@admin)
+        30.times do |n|
+          @users << FactoryGirl.create(:user, email:"example#{n}@ax.com")
+          @users << FactoryGirl.create(:user, admin: true, email:"example#{n+31}@ax.com")
+        end
+      end
+
+      it "should have 'delete' selector for all users exept signed-in admin user" do
+        get :index
+        @users.each do |user|
+          response.should have_selector("a", title:"Delete #{user.name}", content:"delete")
+        end
+      end
+
+      it "should not have 'delete' selector for signed-in admin user" do
+        get :index
+        response.should_not have_selector("a", title:"Delete #{@admin.name}", href: users_path, content:"delete")
+      end
+    end
+
   end
 
   describe "DELETE 'destroy'" do
