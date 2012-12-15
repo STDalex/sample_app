@@ -2,6 +2,7 @@ SampleApp::Application.routes.draw do
 
 resources :users 
 resources :sessions, only: [:new, :create, :destroy]
+resources :micoposts, only: [:create, :destroy]
 
   match '/contact', to: 'pages#contact'
   match '/about', to: 'pages#about'
@@ -11,6 +12,5 @@ resources :sessions, only: [:new, :create, :destroy]
   match '/signout', to: 'sessions#destroy'
   match '/edit', to: 'user#edit'
   root to: 'pages#home'
-
 
 end
