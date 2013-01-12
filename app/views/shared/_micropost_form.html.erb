@@ -1,0 +1,19 @@
+<%= form_for @micropost do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <script type="text/javascript">
+    var count = 140;
+    function limiter()
+    {
+    var text = $("#micropost_content").val();
+    var length = text.length;
+    $("[name = 'limit']").val(count - length);
+    }
+  </script>
+  <div class = "field">
+    <%= f.text_area :content, { onkeyup: 'limiter()'} %>
+  </div>
+  characters left: <input type="text" name="limit" size=4 readonly = true/><br/>
+  <div class = "action">
+    <%= f.submit "submit" %>
+  </div>
+<% end %>

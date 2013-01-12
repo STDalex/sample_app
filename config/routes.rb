@@ -1,8 +1,14 @@
 SampleApp::Application.routes.draw do
 
+resources :users, only: [:index] do
+  resources :microposts, only: [:index]
+end
+
 resources :users 
 resources :sessions, only: [:new, :create, :destroy]
-resources :micoposts, only: [:create, :destroy]
+resources :microposts, only: [:create, :destroy]
+
+
 
   match '/contact', to: 'pages#contact'
   match '/about', to: 'pages#about'

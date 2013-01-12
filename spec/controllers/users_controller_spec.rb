@@ -93,6 +93,50 @@ describe UsersController do
       response.should have_selector("span.content", content: mp1.content)
       response.should have_selector("span.content", content: mp2.content)
     end
+
+    it "should have 1 micropost" do
+      mp = FactoryGirl.create(:micropost, user: @user)
+      get :show, id: @user
+      response.should have_selector("strong", content: "Microposts")
+      response.should have_selector("td.sidebar.round", content: "1")
+    end
+
+    it "should have 2 microposts" do
+      mp1 = FactoryGirl.create(:micropost, user: @user)
+      mp2 = FactoryGirl.create(:micropost, user: @user)
+      get :show, id: @user
+      response.should have_selector("td.sidebar.round", content: "2")
+    end
+
+    it "should have 0 microposts" do
+      get :show, id: @user
+      response.should have_selector("td.sidebar.round", content: "0")
+    end
+
+    it "should paginate microposts" do
+      60.times do
+        mp = FactoryGirl.create(:micropost, user: @user)
+      end
+      get :show, id: @user
+      response.should have_selector("div.pagination")
+      response.should have_selector("a", href: "/users/1?page=2", content: "2")
+      response.should have_selector("a.next_page", href: "/users/1?page=2", content: "Next")
+    end
+
+    it "should create 'delete' link for micropost current user" do
+      test_sign_in(@user)
+      mp = FactoryGirl.create(:micropost, user: @user)
+      get :show, id: @user
+      response.should have_selector("a", href: "/microposts/#{mp.id}", content:"delete")
+    end
+
+    it "should not create 'delete' link for micropost another user" do
+      another_user = FactoryGirl.create(:user, email: "another_user@exaample.com")
+      mp_another_user = FactoryGirl.create(:micropost, user: another_user)
+      test_sign_in(@user)
+      get :show, id: another_user
+      response.should_not have_selector("a", content:"delete")
+    end
   end
 
   describe "POST 'create'" do

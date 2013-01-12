@@ -12,9 +12,22 @@ render_views
       get 'home'
       response.should be_success
     end
-    it "should have the raight titlte" do
+    it "should have the right title" do
       get 'home'
       response.should have_selector("title", :content => @base_title + "Home")
+    end
+
+    describe "GET 'home' by sign in user" do
+
+      before do
+        @user = test_sign_in(FactoryGirl.create(:user))
+      end
+
+      it "should have right count user's microposts" do
+        mp = FactoryGirl.create(:micropost, user: @user)
+        get 'home'
+        response.should have_selector("span.microposts", content: "1 micropost")
+      end
     end
   end
 
@@ -23,7 +36,7 @@ render_views
       get 'contact'
       response.should be_success
     end
-    it "should have the raight titlte" do
+    it "should have the right title" do
       get 'contact'
       response.should have_selector("title", :content => @base_title + "Contact")
     end
@@ -34,7 +47,7 @@ render_views
       get 'about'
       response.should be_success
     end
-    it "should have the raight titlte" do
+    it "should have the right title" do
       get 'about'
       response.should have_selector("title", :content => @base_title + "About")
     end
@@ -45,7 +58,7 @@ render_views
       get 'help'
       response.should be_success
     end
-    it "should have the raight titlte" do
+    it "should have the right title" do
       get 'help'
       response.should have_selector("title", :content => @base_title + "Help")
     end
