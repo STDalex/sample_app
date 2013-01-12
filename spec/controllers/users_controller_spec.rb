@@ -321,7 +321,7 @@ describe UsersController do
         third = FactoryGirl.create(:user, name:"Ron", email:"ronmail@example.com")
         @users = [@user, second, third]
         30.times do |n|
-          @users << FactoryGirl.create(:user, email:"example#{n}@ax.com")
+          @users << FactoryGirl.create(:user)
         end
       end
 
